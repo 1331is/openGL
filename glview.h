@@ -13,12 +13,13 @@ class glView : public QOpenGLWidget
 {
     Q_OBJECT
 private:
-    float xRot, yRot, zRot;
+    float xRot, yRot, zRot, xPrevRot, yPrevRot;
     QPoint mPos;
     QTimer tmr;
     void drawCube(float a);
     void mousePressEvent(QMouseEvent*) override;
     void mouseMoveEvent(QMouseEvent*) override;
+    void mouseReleaseEvent(QMouseEvent*) override;
     void initializeGL() override;
     void resizeGL(int w, int h) override;
     void paintGL() override;
