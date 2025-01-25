@@ -6,9 +6,13 @@ glView::glView(QWidget *parent)
     setWindowTitle("Bomber Man");
     setGeometry(400, 200, 800, 600);
     tmr.start(100);
+    player = new Player(100.0f, 100.0f, 50.0f, 5.0f);
 }
 
-
+glView::~glView()
+{
+    delete player; // Освобождаем память
+}
 
 void glView::initializeGL() //создание окна
 {
@@ -20,8 +24,7 @@ void glView::resizeGL(int w, int h) //изменение окна
     glViewport(0,0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    //glOrtho(-1,1,-1,1,1,2);
-    glFrustum(-1,1,-1,1,1,3);
+    glOrtho(0, w, h, 0, -1, 1);
 }
 void glView::paintGL() // при любом событии
 {
@@ -29,17 +32,49 @@ void glView::paintGL() // при любом событии
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glTranslatef(0,0,-2);
-    glRotatef(xRot, 1, 0, 0);
-    glRotatef(yRot, 0, 1, 0);
-    drawCube(0.5);
+    if (player) {
+        player->draw(); // Отрисовка игрока
+    }
+}
+void glView::keyPressEvent(QKeyEvent *event)
+{
+    if (!player) return;
+
+    switch (event->key()) {
+    case Qt::Key_W:
+        player->move(0, -1); // Вверх
+        break;
+    case Qt::Key_S:
+        player->move(0, 1); // Вниз
+        break;
+    case Qt::Key_A:
+        player->move(-1, 0); // Влево
+        break;
+    case Qt::Key_D:
+        player->move(1, 0); // Вправо
+        break;
+    default:
+        QOpenGLWidget::keyPressEvent(event);
+    }
+
+    update(); // Перерисовать окно
 }
 void glView::mousePressEvent(QMouseEvent * mo){
     mPos = mo->pos();
 }
+void glView::mouseReleaseEvent(QMouseEvent * mo){
+    /*
+    xPrevRot += xRot; // Сохраняем углы вращения
+    yPrevRot += yRot; // Сохраняем углы вращения
+    mPos = mo->pos();
+    xRot = 0; // Сбрасываем текущие углы вращения
+    yRot = 0;
+*/
+}
 void glView::mouseMoveEvent(QMouseEvent * mo){
-    xRot = 1 / M_PI*(mo->pos().y() - mPos.y());
-    yRot = 1 / M_PI*(mo->pos().x() - mPos.x());
+    xRot += 1 / M_PI*(mo->pos().y() - mPos.y());
+    yRot += 1 / M_PI*(mo->pos().x() - mPos.x());
+    mPos = mo->pos();
     update();
 }
 void glView::drawCube(float a)
