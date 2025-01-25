@@ -10,7 +10,7 @@ class glView;
 }
 QT_END_NAMESPACE
 
-class glView : public QOpenGLWidget
+class glView : public QOpenGLWidget, public QOpenGLFunctions
 {
     Q_OBJECT
 private:

@@ -1,7 +1,12 @@
 #include "player.h"
 #include <GL/gl.h>
+
+// Конструктор с инициализацией OpenGL-функций
 Player::Player(float startX, float startY, float playerSize, float playerSpeed)
-    : x(startX), y(startY), size(playerSize), speed(playerSpeed) {}
+    : x(startX), y(startY), size(playerSize), speed(playerSpeed)
+{
+    initializeOpenGLFunctions(); // Добавлено: инициализация OpenGL-функций
+}
 
 void Player::draw()
 {
@@ -18,25 +23,17 @@ void Player::draw()
         1.0, 1.0, 0.0          // Жёлтый (верхний левый)
     };
 
-
-    //glShadeModel(GL_SMOOTH);
-
-    // Настройка массива вершин
     glVertexPointer(2, GL_FLOAT, 0, ver_sqrt); // 2D координаты
     glEnableClientState(GL_VERTEX_ARRAY);
 
-    // Настройка массива цветов
     glColorPointer(3, GL_FLOAT, 0, color_arr); // RGB цвета
     glEnableClientState(GL_COLOR_ARRAY);
 
-    // Отрисовка квадрата
     glDrawArrays(GL_QUADS, 0, 4);
 
-    // Отключение массивов
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_COLOR_ARRAY);
 }
-
 void Player::move(float dx, float dy)
 {
     x += dx * speed;

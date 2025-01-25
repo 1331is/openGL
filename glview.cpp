@@ -4,8 +4,9 @@ glView::glView(QWidget *parent)
     : QOpenGLWidget(parent)
 {
     setWindowTitle("Bomber Man");
-    setGeometry(400, 200, 800, 600);
+    setGeometry(100, 100, 1280, 720);
     tmr.start(100);
+    //setFocusPolicy(Qt::StrongFocus);
     player = new Player(100.0f, 100.0f, 50.0f, 5.0f);
 }
 
@@ -16,7 +17,9 @@ glView::~glView()
 
 void glView::initializeGL() //создание окна
 {
+    initializeOpenGLFunctions(); // Добавлено: инициализация OpenGL-функций
     glEnable(GL_DEPTH_TEST);
+
 }
 
 void glView::resizeGL(int w, int h) //изменение окна
@@ -28,13 +31,22 @@ void glView::resizeGL(int w, int h) //изменение окна
 }
 void glView::paintGL() // при любом событии
 {
-    glClearColor(0,1,0,1);
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    if (player) {
-        player->draw(); // Отрисовка игрока
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // Убедитесь, что OpenGL-контекст активен
+    Q_ASSERT(QOpenGLContext::currentContext() != nullptr);
+
+    // Убедитесь, что игрок инициализирован
+    if (player != nullptr) {
+        player->draw();
     }
+
+    // Пример вращения сцены (если необходимо)
+    glPushMatrix();
+    glRotatef(xRot, 1.0, 0.0, 0.0);
+    glRotatef(yRot, 0.0, 1.0, 0.0);
+    glRotatef(zRot, 0.0, 0.0, 1.0);
+    glPopMatrix();
 }
 void glView::keyPressEvent(QKeyEvent *event)
 {
