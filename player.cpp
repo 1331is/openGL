@@ -4,12 +4,11 @@
 // Конструктор с инициализацией OpenGL-функций
 Player::Player(float startX, float startY, float playerSize, float playerSpeed)
     : x(startX), y(startY), size(playerSize), speed(playerSpeed)
-{
-    initializeOpenGLFunctions(); // Добавлено: инициализация OpenGL-функций
-}
+{}
 
 void Player::draw()
 {
+    initializeOpenGLFunctions(); // Добавлено: инициализация OpenGL-функций
     float ver_sqrt[] = {
         x, y,
         x + size, y,
