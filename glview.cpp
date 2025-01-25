@@ -19,7 +19,7 @@ void glView::initializeGL() //создание окна
 {
     initializeOpenGLFunctions(); // Добавлено: инициализация OpenGL-функций
     glEnable(GL_DEPTH_TEST);
-
+    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 }
 
 void glView::resizeGL(int w, int h) //изменение окна
@@ -42,11 +42,6 @@ void glView::paintGL() // при любом событии
     }
 
     // Пример вращения сцены (если необходимо)
-    glPushMatrix();
-    glRotatef(xRot, 1.0, 0.0, 0.0);
-    glRotatef(yRot, 0.0, 1.0, 0.0);
-    glRotatef(zRot, 0.0, 0.0, 1.0);
-    glPopMatrix();
 }
 void glView::keyPressEvent(QKeyEvent *event)
 {
@@ -54,16 +49,16 @@ void glView::keyPressEvent(QKeyEvent *event)
 
     switch (event->key()) {
     case Qt::Key_W:
-        player->move(0, -1); // Вверх
+        player->move(0, -1);
         break;
     case Qt::Key_S:
-        player->move(0, 1); // Вниз
+        player->move(0, 1);
         break;
     case Qt::Key_A:
-        player->move(-1, 0); // Влево
+        player->move(-1, 0);
         break;
     case Qt::Key_D:
-        player->move(1, 0); // Вправо
+        player->move(1, 0);
         break;
     default:
         QOpenGLWidget::keyPressEvent(event);
