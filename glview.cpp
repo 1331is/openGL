@@ -6,6 +6,10 @@ glView::glView(QWidget *parent)
     setWindowTitle("Bomber Man");
     setGeometry(400, 200, 800, 600);
     tmr.start(100);
+    xPrevRot = 0;
+    yPrevRot = 0;
+    xRot = 0;
+    yRot = 0;
 }
 
 
@@ -37,9 +41,19 @@ void glView::paintGL() // при любом событии
 void glView::mousePressEvent(QMouseEvent * mo){
     mPos = mo->pos();
 }
+void glView::mouseReleaseEvent(QMouseEvent * mo){
+    /*
+    xPrevRot += xRot; // Сохраняем углы вращения
+    yPrevRot += yRot; // Сохраняем углы вращения
+    mPos = mo->pos();
+    xRot = 0; // Сбрасываем текущие углы вращения
+    yRot = 0;
+*/
+}
 void glView::mouseMoveEvent(QMouseEvent * mo){
-    xRot = 1 / M_PI*(mo->pos().y() - mPos.y());
-    yRot = 1 / M_PI*(mo->pos().x() - mPos.x());
+    xRot += 1 / M_PI*(mo->pos().y() - mPos.y());
+    yRot += 1 / M_PI*(mo->pos().x() - mPos.x());
+    mPos = mo->pos();
     update();
 }
 void glView::drawCube(float a)
