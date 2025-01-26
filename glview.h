@@ -4,6 +4,7 @@
 #include <QtOpenGL>
 #include <QOpenGLWidget>
 #include "player.h"
+#include "map.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class glView;
@@ -18,6 +19,7 @@ private:
     QPoint mPos;
     QTimer tmr;
     Player *player;
+    Map* map;
     void drawCube(float a);
     void mousePressEvent(QMouseEvent*) override;
     void mouseMoveEvent(QMouseEvent*) override;

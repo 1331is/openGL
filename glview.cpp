@@ -1,4 +1,5 @@
 #include "glview.h"
+#include "map.h"
 #include "./ui_glview.h"
 glView::glView(QWidget *parent)
     : QOpenGLWidget(parent)
@@ -7,7 +8,13 @@ glView::glView(QWidget *parent)
     setGeometry(100, 100, 1280, 720);
     tmr.start(100);
     setFocusPolicy(Qt::StrongFocus);
+    float cellSize = 50; // Размер одной ячейки
+    int rows = height() / cellSize; // Число строк
+    int cols = width() / cellSize;  // Число столбцов
+    map = new Map(rows, cols);
+    initializeMap(map);
     player = new Player(100.0f, 100.0f, 50.0f, 5.0f);
+
 }
 
 glView::~glView()
@@ -35,6 +42,9 @@ void glView::paintGL() // при любом событии
 
 
     Q_ASSERT(QOpenGLContext::currentContext() != nullptr);
+    if (map) {
+        map->draw(50); // Размер одной ячейки 50x50
+    }
     if (player != nullptr) {
         player->draw();
     }
